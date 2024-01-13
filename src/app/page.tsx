@@ -1,9 +1,13 @@
-import Image from "next/image";
+import React from "react";
+import CreateUserForm from "./_components/CreateUserForm";
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <div>
-      <h1>Home</h1>
+      <h1>Create User</h1>
+      <CreateUserForm />
     </div>
   );
-}
+};
+
+export default Home;
