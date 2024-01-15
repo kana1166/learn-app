@@ -1,23 +1,20 @@
 import React from "react";
-import CreateUserForm from "./_components/CreateUserForm";
-import CreateSchedulePage from "./_components/CreateSchedulePage";
-import MyPage from "./_components/MyPage";
+import Footer from "./Footer";
+import LoginComponent from "./_components/login";
+import Header from "./Header";
 
 const Home: React.FC = () => {
   return (
     <>
+      <Header />
       <div>
-        <h1>Create User</h1>
-        <CreateUserForm />
+        <LoginComponent />
+
         <br />
         <br />
         <br />
-        <h1>スケジュール登録</h1>
-        <CreateSchedulePage />
       </div>
-      <div>
-        <MyPage />
-      </div>
+      <Footer />
     </>
   );
 };

@@ -34,17 +34,13 @@ export async function createUser(
   return response.json();
 }
 
-export async function updateUser(
-  firebaseId: string,
-  email: string,
-  name: string
-) {
+export async function updateUser(userId: string, email: string, name: string) {
   const response = await fetch("http://localhost:4000/api/updateUser", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify({ firebaseId, email, name }),
+    body: JSON.stringify({ userId, email, name }),
   });
   if (!response.ok) {
     throw new Error("API call failed");
