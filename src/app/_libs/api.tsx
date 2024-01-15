@@ -78,7 +78,7 @@ export async function updateDayOfWeek(dayOfWeekId: string, name: string) {
 
 export async function createSchedule(
   userId: string,
-  daysOfWeekId: string,
+  dayOfWeekId: string,
   duration: number
 ) {
   const response = await fetch("http://localhost:4000/api/createSchedule", {
@@ -86,7 +86,7 @@ export async function createSchedule(
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify({ userId, daysOfWeekId, duration }),
+    body: JSON.stringify({ userId, dayOfWeekId, duration }),
   });
   if (!response.ok) {
     throw new Error("API call failed");
