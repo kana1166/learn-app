@@ -16,6 +16,12 @@ const Header = () => {
           <li>
             <Link href="/schedule">スケジュール登録</Link>
           </li>
+          <li>
+            <Link href="/scheduleList">スケジュールリスト</Link>
+          </li>
+          <li>
+            <Link href="/record">記録</Link>
+          </li>
         </ul>
       </nav>
     </header>

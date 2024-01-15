@@ -1,9 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import getUser from "../_libs/api";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../firebase/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
+import { initializeFirebase } from "../firebase/firebaseInit";
 import UpdateUser from "../_components/UpdateUser";
 
 interface User {
@@ -15,12 +14,6 @@ interface User {
   updatedAt: string;
   deletedAt: string | null;
 }
-
-// Firebaseを初期化
-const app = initializeApp(firebaseConfig);
-
-// Authenticationサービスを取得
-const auth = getAuth(app);
 
 const MyPage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -40,6 +33,8 @@ const MyPage = () => {
         throw error; // エラーを再スロー
       }
     };
+
+    const { auth } = initializeFirebase();
 
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {

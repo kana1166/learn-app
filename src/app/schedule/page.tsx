@@ -1,6 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createSchedule } from "../_libs/api";
+import { onAuthStateChanged } from "firebase/auth";
+import { initializeFirebase } from "../firebase/firebaseInit";
+import getUser from "../_libs/api";
 
 const daysOfWeek = [
   { dayOfWeekId: "70dcebc0-6bd3-4d28-b749-a1de1ec5c7b7", name: "Monday" },
@@ -12,10 +15,41 @@ const daysOfWeek = [
   { dayOfWeekId: "031e903d-a06a-4396-a2da-c0cece14bb91", name: "Sunday" },
 ];
 
-const createSchedulePage: React.FC = () => {
-  const [userId, setUserId] = useState("");
+const CreateSchedulePage: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState("");
   const [duration, setDuration] = useState(0);
+
+  const [userId, setUserId] = useState(""); // ユーザーIDをstateで管理
+
+  // Firebaseの初期化
+  const { auth } = initializeFirebase();
+
+  useEffect(() => {
+    // 認証ステートが変更された時の処理
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // ユーザーがログインしている場合、ユーザーIDをセット
+        const userIdFromFirebase = await fetchUserId(user.uid); // ユーザーIDを非同期で取得
+        setUserId(userIdFromFirebase);
+      } else {
+        // ユーザーがログアウトしている場合、ユーザーIDを空にする
+        setUserId("");
+      }
+    });
+
+    return () => unsubscribe(); // クリーンアップ
+  }, [auth]);
+
+  const fetchUserId = async (firebaseUserId: string) => {
+    try {
+      const appUser = await getUser(firebaseUserId); // ユーザーオブジェクトを取得
+      const appUserId = appUser.userId; // ユーザーIDを取得
+      return appUserId;
+    } catch (error) {
+      console.error("Failed to fetch user ID:", error);
+      return "";
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +126,7 @@ const createSchedulePage: React.FC = () => {
       </div>
       <button
         type="submit"
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="mt-4 bg-blue-500 hover.bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Create Schedule
       </button>
@@ -100,4 +134,4 @@ const createSchedulePage: React.FC = () => {
   );
 };
 
-export default createSchedulePage;
+export default CreateSchedulePage;

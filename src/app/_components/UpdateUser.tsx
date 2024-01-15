@@ -28,7 +28,7 @@ const UpdateUser = () => {
     });
 
     return () => unsubscribe(); // cleanup関数を返してunsubscribeする
-  }, [auth]); // authが変更された場合に再度実行
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
