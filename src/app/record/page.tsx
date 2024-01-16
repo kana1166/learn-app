@@ -4,9 +4,11 @@ import { createRecord } from "../_libs/api";
 import { onAuthStateChanged } from "firebase/auth";
 import { initializeFirebase } from "../firebase/firebaseInit";
 import getUser from "../_libs/api";
+import DatePicker from "react-datepicker"; // DatePickerの追加
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateRecordPage: React.FC = () => {
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date()); // デフォルト値を現在の日付に変更
   const [duration, setDuration] = useState(0);
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(true);
@@ -55,14 +57,13 @@ const CreateRecordPage: React.FC = () => {
       }
     };
 
-    const formatDate = (inputDate: string) => {
-      const date = new Date(inputDate);
-      const isoDateString = date.toISOString();
+    const formatDate = (inputDate: Date) => {
+      const isoDateString = inputDate.toISOString();
       return isoDateString;
     };
 
     return () => unsubscribe();
-  }, []);
+  }, [date]); // dateが変更されたときにのみ実行
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +71,7 @@ const CreateRecordPage: React.FC = () => {
     try {
       const requestData = {
         userId: userId,
-        date: date,
+        date: date.toISOString(), // Date型をISO文字列に変換
         duration: duration,
         note: note,
       };
@@ -103,11 +104,15 @@ const CreateRecordPage: React.FC = () => {
       </div>
       <div>
         <label htmlFor="date">Date:</label>
-        <input
-          type="text"
-          id="date"
-          defaultValue={new Date().toISOString()}
-          onChange={(e) => setDate(e.target.value)}
+        {/* DatePickerコンポーネントを使用 */}
+        <DatePicker
+          selected={date}
+          onChange={(newDate) => {
+            if (newDate !== null) {
+              setDate(newDate);
+            }
+          }}
+          dateFormat="yyyy-MM-dd"
         />
       </div>
       <div>
