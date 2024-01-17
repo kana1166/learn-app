@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "firebase": "^10.7.1",
+    "firebase-admin": "^12.0.0",
     "next": "14.0.4",
     "react": "^18",
     "react-big-calendar": "^1.8.6",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/node-fetch": "^2.6.11",
     "@types/react": "^18",
     "@types/react-big-calendar": "^1.8.8",
     "@types/react-datepicker": "^4.19.5",

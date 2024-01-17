@@ -1,16 +1,26 @@
-//_libs/AudioParam.tsx
+//_libs/api.tsx
 export default async function getUser(firebaseId: string) {
-  const response = await fetch("http://localhost:4000/api/getUser", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ firebaseId }),
-  });
-  if (!response.ok) {
-    throw new Error("API call failed");
+  try {
+    const response = await fetch("/api/getUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ firebaseId }),
+    });
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("API Response Error:", response.status, errorBody); // デバッグ情報
+      throw new Error(
+        `API call failed with status ${response.status}: ${errorBody}`
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("getUser Error:", error); // デバッグ情報
+    throw error;
   }
-  return response.json();
 }
 
 export async function createUser(
@@ -18,7 +28,7 @@ export async function createUser(
   email: string,
   name: string
 ) {
-  const response = await fetch("http://localhost:4000/api/createUser", {
+  const response = await fetch("/api/createUser", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -35,7 +45,7 @@ export async function createUser(
 }
 
 export async function updateUser(userId: string, email: string, name: string) {
-  const response = await fetch("http://localhost:4000/api/updateUser", {
+  const response = await fetch("/api/updateUser", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -49,7 +59,7 @@ export async function updateUser(userId: string, email: string, name: string) {
 }
 
 export async function getDaysOfWeekList() {
-  const response = await fetch("http://localhost:4000/api/getDaysOfWeekList", {
+  const response = await fetch("/api/getDaysOfWeekList", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -63,7 +73,7 @@ export async function getDaysOfWeekList() {
 }
 
 export async function updateDayOfWeek(dayOfWeekId: string, name: string) {
-  const response = await fetch("http://localhost:4000/api/updateDayOfWeek", {
+  const response = await fetch("/api/updateDayOfWeek", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -81,7 +91,7 @@ export async function createSchedule(
   dayOfWeekId: string,
   duration: number
 ) {
-  const response = await fetch("http://localhost:4000/api/createSchedule", {
+  const response = await fetch("/api/createSchedule", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -95,7 +105,7 @@ export async function createSchedule(
 }
 
 export async function getSchedulesList(userId: string) {
-  const response = await fetch("http://localhost:4000/api/getSchedulesList", {
+  const response = await fetch("/api/getSchedulesList", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -109,7 +119,7 @@ export async function getSchedulesList(userId: string) {
 }
 
 export async function updateSchedule(scheduleId: string, duration: number) {
-  const response = await fetch("http://localhost:4000/api/updateSchedule", {
+  const response = await fetch("/api/updateSchedule", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -128,7 +138,7 @@ export async function createRecord(
   duration: number,
   note: string
 ) {
-  const response = await fetch("http://localhost:4000/api/createRecord", {
+  const response = await fetch("/api/createRecord", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -146,7 +156,7 @@ export async function getRecordsList(
   startDate: string,
   endDate: string
 ) {
-  const response = await fetch("http://localhost:4000/api/getRecordsList", {
+  const response = await fetch("/api/getRecordsList", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
